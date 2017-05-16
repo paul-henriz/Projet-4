@@ -35,12 +35,12 @@ Mot DetectPossibilites(char **tab, int taillex, int tailley, char *mot, int posx
     if(orientation == FLAG_HORIZONTAL){
         newmot.x_debut = posx;
         newmot.x_fin = posx;
-        while(tab[i][j] != '*'){
+        while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.y_debut = j;
             j--;
         }
         j = posy;
-        while(tab[i][j] != '*'){
+        while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.y_fin = j;
             j++;
         }
@@ -48,12 +48,12 @@ Mot DetectPossibilites(char **tab, int taillex, int tailley, char *mot, int posx
     if(orientation == FLAG_VERTICAL){
         newmot.y_debut = posy;
         newmot.y_fin = posy;
-        while(tab[i][j] != '*'){
+        while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.x_debut = i;
             i--;
         }
-        j = posy;
-        while(tab[i][j] != '*'){
+        i = posx;
+        while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.x_fin = i;
             i++;
         }
@@ -82,7 +82,8 @@ void MotsCroises(){
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, 0, lexique[0]);
     insererMotDansTab2D(&tab, &taillex, &tailley, 1, 4, 1, lexique[0]);
     afficherTab2D(tab, taillex, tailley);
-    printf("%d", detectOrientation(tab, taillex, tailley, 1, 4));
+    Mot blabla = DetectPossibilites(tab, taillex, tailley, "NNNNN", 0, 5, detectOrientation(tab, taillex, tailley, 0, 5));
+    printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);
 }
 
 
