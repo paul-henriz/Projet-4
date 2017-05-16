@@ -1,11 +1,3 @@
-//
-//  Bibliotheque.h
-//  Projet 4
-//
-//  Created by Paul-Henri Zimmerlin on 04/05/2017.
-//  Copyright © 2017 Paul-Henri Zimmerlin. All rights reserved.
-//
-
 #ifndef Bibliotheque_h
 #define Bibliotheque_h
 
@@ -965,7 +957,7 @@ char* genererSousAlphabetCaracteresPonctuation(unsigned char* alphabet, int char
 
 
 
-
+// Code perso
 
 
 // Insère un caractère dans le tableau, et agrandi le tableau au besoin

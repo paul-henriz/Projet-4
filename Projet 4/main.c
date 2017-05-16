@@ -18,20 +18,32 @@ typedef struct {
     int y_fin;
 } Mot;
 
+// Cette fonction retourne 1 si un mot donné a pu être inséré automatiquement dans la grille.
+
 int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot){
     for(int i = 0; i < *taillex; i++){
         for(int j = 0; j < *tailley; j++){
             if(accederTab2D(tab, *taillex, *tailley, i, j) != '*'){
-                int dir = detectOrientation(tab, taillex, tailley, i, j);
+                
             }
         }
     }
     return 1;
 }
 
-Mot DetectPossibilites(char **tab, int taillex, int tailley, char *mot, int posx, int posy, int orientation){
+// Retourne l'orientation du mot, ou -1 en cas d'erreur.
+
+int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy){
+    if((accederTab2D(tab, taillex, tailley, posx - 1, posy) != '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) != '*') && (accederTab2D(tab, taillex, tailley, posx, posy - 1) == '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) == '*')) return FLAG_VERTICAL;
+    if((accederTab2D(tab, taillex, tailley, posx, posy - 1) != '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) != '*') && (accederTab2D(tab, taillex, tailley, posx - 1, posy) == '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) == '*')) return FLAG_HORIZONTAL;
+    return -1;
+}
+
+// Cette fonction détecte les coordonnées de début et de fin d'un mot dans la grille.
+
+Mot CoordonneesMot(char **tab, int taillex, int tailley, char *mot, int posx, int posy){
     Mot newmot;
-    int i = posx,j = posy;
+    int i = posx,j = posy, orientation = detectOrientation(tab, taillex, tailley, posx, posy);
     if(orientation == FLAG_HORIZONTAL){
         newmot.x_debut = posx;
         newmot.x_fin = posx;
@@ -58,22 +70,17 @@ Mot DetectPossibilites(char **tab, int taillex, int tailley, char *mot, int posx
             i++;
         }
     }
+    else{
+        newmot.x_debut = 0;
+        newmot.x_fin = 0;
+        newmot.y_debut = 0;
+        newmot.y_fin = 0;
+    }
     return newmot;
 }
 
-int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy){
-    if((accederTab2D(tab, taillex, tailley, posx - 1, posy) != '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) != '*') && (accederTab2D(tab, taillex, tailley, posx, posy - 1) == '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) == '*')) return FLAG_VERTICAL;
-    if((accederTab2D(tab, taillex, tailley, posx, posy - 1) != '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) != '*') && (accederTab2D(tab, taillex, tailley, posx - 1, posy) == '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) == '*')) return FLAG_HORIZONTAL;
-    return -1;
-}
+
 void MotsCroises(){
-    /**int longueur, largeur;
-     printf("Saisir la largeur ");
-     scanf("%d", &largeur);
-     printf("\n");
-     printf("Saisir la longueur ");
-     scanf("%d", &longueur);
-     printf("\n");*/
     int taillex = 0;
     int tailley = 0;
     char **tab = creerTab2D(taillex, tailley);
@@ -82,7 +89,7 @@ void MotsCroises(){
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, 0, lexique[0]);
     insererMotDansTab2D(&tab, &taillex, &tailley, 1, 4, 1, lexique[0]);
     afficherTab2D(tab, taillex, tailley);
-    Mot blabla = DetectPossibilites(tab, taillex, tailley, "NNNNN", 0, 5, detectOrientation(tab, taillex, tailley, 0, 5));
+    Mot blabla = CoordonneesMot(tab, taillex, tailley, "NNNNN", 0, 5);
     printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);
 }
 
