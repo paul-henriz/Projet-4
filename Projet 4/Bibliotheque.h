@@ -999,15 +999,4 @@ void insererMotDansTab2D(char ***tab, int *taillex, int *tailley, int posx, int 
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 #endif /* Bibliotheque_h */
