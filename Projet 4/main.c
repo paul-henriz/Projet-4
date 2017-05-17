@@ -30,7 +30,13 @@ int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot){
     for(int i = 0; i < *taillex; i++){
         for(int j = 0; j < *tailley; j++){
             if(accederTab2D(tab, *taillex, *tailley, i, j) != '*'){
-                if(*mot == tab[i][j]) insererMotDansTab2D(&tab, taillex, tailley, i, j, detectOrientation(tab, *taillex, *tailley, i, j), mot);
+                if(*mot == tab[i][j]){
+                    int dir;
+                    if(detectOrientation(tab, *taillex, *tailley, i, j)) dir = 0;
+                    else dir = 1;
+                    insererMotDansTab2D(&tab, taillex, tailley, i, j, dir, mot);
+                    //printf("%d", detectOrientation(tab, *taillex, *tailley, i, j));
+                }
             }
         }
     }
@@ -94,8 +100,7 @@ void MotsCroises(){
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, 0, lexique[0]);
     //insererMotDansTab2D(&tab, &taillex, &tailley, 1, 4, 1, lexique[0]);
     insererMotGrille(tab, &taillex, &tailley, lexique[0]);
-    taillex = 4;
-    tailley = 8;
+    //printf("%d - %d", taillex, tailley);
     afficherTab2D(tab, taillex, tailley);
     //Mot blabla = CoordonneesMot(tab, taillex, tailley, "NNNNN", 0, 5);
     //printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);
