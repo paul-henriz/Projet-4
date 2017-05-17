@@ -18,13 +18,19 @@ typedef struct {
     int y_fin;
 } Mot;
 
+int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot);
+int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy);
+Mot CoordonneesMot(char **tab, int taillex, int tailley, char *mot, int posx, int posy);
+void MotsCroises();
+
+
 // Cette fonction retourne 1 si un mot donné a pu être inséré automatiquement dans la grille.
 
 int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot){
     for(int i = 0; i < *taillex; i++){
         for(int j = 0; j < *tailley; j++){
             if(accederTab2D(tab, *taillex, *tailley, i, j) != '*'){
-                
+                if(*mot == tab[i][j]) insererMotDansTab2D(&tab, taillex, tailley, i, j, detectOrientation(tab, *taillex, *tailley, i, j), mot);
             }
         }
     }
@@ -84,13 +90,15 @@ void MotsCroises(){
     int taillex = 0;
     int tailley = 0;
     char **tab = creerTab2D(taillex, tailley);
-    afficherTab2D(tab, taillex, tailley);
     char **lexique = chargerLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt", calculerTailleLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt"));
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, 0, lexique[0]);
-    insererMotDansTab2D(&tab, &taillex, &tailley, 1, 4, 1, lexique[0]);
+    //insererMotDansTab2D(&tab, &taillex, &tailley, 1, 4, 1, lexique[0]);
+    insererMotGrille(tab, &taillex, &tailley, lexique[0]);
+    taillex = 4;
+    tailley = 8;
     afficherTab2D(tab, taillex, tailley);
-    Mot blabla = CoordonneesMot(tab, taillex, tailley, "NNNNN", 0, 5);
-    printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);
+    //Mot blabla = CoordonneesMot(tab, taillex, tailley, "NNNNN", 0, 5);
+    //printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);
 }
 
 
