@@ -32,18 +32,21 @@ int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot){
             if(accederTab2D(tab, *taillex, *tailley, i, j) != '*'){
                 if(*mot == tab[i][j]){
                     afficherTab2D(tab, *taillex, *tailley);
-                    printf("\n");
+                    printf("\n %s \n", mot);
+                    
                     int dir;
                     if(detectOrientation(tab, *taillex, *tailley, i, j)) dir = 0;
                     else dir = 1;
-                    for(int l = 0; l <= strlen(mot); l++){
+                    for(int l = 1; l <= strlen(mot); l++){
                         if(dir == FLAG_HORIZONTAL){
-                            if(tab[i][j+l] != '*') return 0;
-                            if(tab[i+1][j+l] != '*' || tab[i-1][j+l] != '*') return 0;
+                            if(accederTab2D(tab, *taillex, *tailley, i, j+l) != '*') return 0;
+                            //if(accederTab2D(tab, *taillex, *tailley, i+1, j+l) != '*' || accederTab2D(tab, *taillex, *tailley, i-1, j+l) != '*') return 0;
+                        }
+                        if(dir == FLAG_VERTICAL){
+                            if(accederTab2D(tab, *taillex, *tailley, i+l, j) != '*') return 0;
                         }
                     }
                     insererMotDansTab2D(&tab, taillex, tailley, i, j, dir, mot);
-                    //printf("%d", detectOrientation(tab, *taillex, *tailley, i, j));
                     return 0;
                 }
             }
@@ -65,32 +68,48 @@ int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy){
 Mot CoordonneesMot(char **tab, int taillex, int tailley, char *mot, int posx, int posy){
     Mot newmot;
     int i = posx,j = posy, orientation = detectOrientation(tab, taillex, tailley, posx, posy);
+    
+    // Si le mot est horizontal, on ne modifiera que les composantes y
     if(orientation == FLAG_HORIZONTAL){
         newmot.x_debut = posx;
         newmot.x_fin = posx;
+        // On parcours les colonnes précédentes pour déterminer la premiere lettre
         while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.y_debut = j;
             j--;
         }
+        
+        // On réinitialise le curseur
         j = posy;
+        
+        // On parcours les colonnes suivantes pour déterminer la derniere lettre
         while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.y_fin = j;
             j++;
         }
     }
+    
+    // Si le mot est vertical, on ne modifiera que les composantes x
     if(orientation == FLAG_VERTICAL){
         newmot.y_debut = posy;
         newmot.y_fin = posy;
+        
+        // On parcours les lignes précédentes pour déterminer la premiere lettre
         while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.x_debut = i;
             i--;
         }
+        
+        // On réinitialise le curseur
         i = posx;
+        
+        // On parcours les lignes suivantes pour déterminer la derniere lettre
         while(accederTab2D(tab, taillex, tailley, i, j) != '*'){
             newmot.x_fin = i;
             i++;
         }
     }
+    // Sinon le mot n'existe pas
     else{
         newmot.x_debut = 0;
         newmot.x_fin = 0;
@@ -118,18 +137,19 @@ void MotsCroises(){
     // Faire croiser ce mot
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, FLAG_VERTICAL, lexique[1]);
     
-    for(int i = 0; i < 9; i++){
+    // Tenter de remplir la grille avec d'autres mots
+    for(int i = 2; i < 8; i++){
         insererMotGrille(tab, &taillex, &tailley, lexique[i]);
     }
     
-    
-    //insererMotDansTab2D(&tab, &taillex, &tailley, 1, 4, 1, lexique[0]);
-    /**insererMotGrille(tab, &taillex, &tailley, lexique[0]);
-    insererMotGrille(tab, &taillex, &tailley, lexique[3]);
-    insererMotGrille(tab, &taillex, &tailley, lexique[0]);*/
+    // On affiche
     afficherTab2D(tab, taillex, tailley);
-    //Mot blabla = CoordonneesMot(tab, taillex, tailley, "NNNNN", 0, 5);
-    //printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);
+    
+    
+    // Détermine les coordonées de début et de fin d'un mot (fonction qui sera utilisée plus tard), à partir d'une lettre
+    
+    /**Mot blabla = CoordonneesMot(tab, taillex, tailley, "NNNNN", 0, 5);
+    printf("x : %d, %d ; y: %d, %d\n", blabla.x_debut, blabla.x_fin, blabla.y_debut, blabla.y_fin);*/
 }
 
 
