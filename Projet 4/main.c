@@ -11,6 +11,8 @@
 #define FLAG_HORIZONTAL 1
 #define FLAG_VERTICAL 0
 
+
+// Coordonnées d'un mot
 typedef struct {
     int x_debut;
     int y_debut;
@@ -18,6 +20,8 @@ typedef struct {
     int y_fin;
 } Mot;
 
+
+// Prototypes
 int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot);
 int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy);
 Mot CoordonneesMot(char **tab, int taillex, int tailley, char *mot, int posx, int posy);
@@ -31,19 +35,19 @@ int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot){
         for(int j = 0; j < *tailley; j++){
             if(accederTab2D(tab, *taillex, *tailley, i, j) != '*'){
                 if(*mot == tab[i][j]){
-                    afficherTab2D(tab, *taillex, *tailley);
-                    printf("\n %s \n", mot);
+                    //afficherTab2D(tab, *taillex, *tailley);
+                    //printf("\n %s \n", mot);
                     
                     int dir;
                     if(detectOrientation(tab, *taillex, *tailley, i, j)) dir = 0;
                     else dir = 1;
                     for(int l = 1; l <= strlen(mot); l++){
                         if(dir == FLAG_HORIZONTAL){
-                            if(accederTab2D(tab, *taillex, *tailley, i, j+l) != '*') return 0;
+                            if(accederTab2D(tab, *taillex, *tailley, i, j+l) != '*') return 1;
                             //if(accederTab2D(tab, *taillex, *tailley, i+1, j+l) != '*' || accederTab2D(tab, *taillex, *tailley, i-1, j+l) != '*') return 0;
                         }
                         if(dir == FLAG_VERTICAL){
-                            if(accederTab2D(tab, *taillex, *tailley, i+l, j) != '*') return 0;
+                            if(accederTab2D(tab, *taillex, *tailley, i+l, j) != '*') return 1;
                         }
                     }
                     insererMotDansTab2D(&tab, taillex, tailley, i, j, dir, mot);
@@ -55,11 +59,11 @@ int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot){
     return 1;
 }
 
-// Retourne l'orientation du mot, ou -1 en cas d'erreur.
+// Retourne l'orientation du mot (s'il est utilisable, avec les cases voisines de libre), ou -1 en cas d'erreur (si toutes les cases voisines sont occupées)
 
 int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy){
-    if((accederTab2D(tab, taillex, tailley, posx - 1, posy) != '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) != '*') && (accederTab2D(tab, taillex, tailley, posx, posy - 1) == '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) == '*')) return FLAG_VERTICAL;
-    if((accederTab2D(tab, taillex, tailley, posx, posy - 1) != '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) != '*') && (accederTab2D(tab, taillex, tailley, posx - 1, posy) == '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) == '*')) return FLAG_HORIZONTAL;
+    if((accederTab2D(tab, taillex, tailley, posx - 1, posy) != '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) != '*') && (accederTab2D(tab, taillex, tailley, posx, posy - 1) == '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) == '*')) return FLAG_VERTICAL; // Le mot est placé horizontalement
+    if((accederTab2D(tab, taillex, tailley, posx, posy - 1) != '*'|| accederTab2D(tab, taillex, tailley, posx, posy + 1) != '*') && (accederTab2D(tab, taillex, tailley, posx - 1, posy) == '*'|| accederTab2D(tab, taillex, tailley, posx + 1, posy) == '*')) return FLAG_HORIZONTAL; // Le mot est placé verticalement
     return -1;
 }
 
@@ -153,7 +157,39 @@ void MotsCroises(){
 }
 
 
+// Partie 2 : Mots mêlés
+void MotsMeles(){
+    int taillex = 0;
+    int tailley = 0;
+    
+    // Créer une grille vide (uniquement des '*'
+    char **tab = creerTab2D(taillex, tailley);
+    
+    // Charger le dictionnaire
+    char **lexique = chargerLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt", calculerTailleLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt"));
+    
+    // Ajouter un mot du dictionnaire
+    insererMotDansTab2D(&tab, &taillex, &tailley, 2, 5, FLAG_HORIZONTAL, lexique[0]);
+    
+    // Faire croiser ce mot
+    insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, FLAG_VERTICAL, lexique[1]);
+    
+    // Tenter de remplir la grille avec d'autres mots
+    for(int i = 2; i < 4; i++){
+        insererMotGrille(tab, &taillex, &tailley, lexique[i]);
+    }
+    for(int i = 0; i < taillex; i++){
+        for(int j = 0; j < tailley; j++){
+            if(tab[i][j] == '*') tab[i][j] = rand()%('Z'-'A'+1) + 'A';
+        }
+    }
+    // On affiche
+    afficherTab2D(tab, taillex, tailley);
+    printf("\n");
+    for(int i = 0; i < 4; i++) printf("%s\n", lexique[i]);
+}
+
 int main(int argc, const char * argv[]) {
-    MotsCroises();
+    MotsMeles();
     return 0;
 }
