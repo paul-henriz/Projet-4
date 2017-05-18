@@ -26,6 +26,7 @@ int insererMotGrille(char **tab, int *taillex, int *tailley, char *mot);
 int detectOrientation(char **tab, int taillex, int tailley, int posx, int posy);
 Mot CoordonneesMot(char **tab, int taillex, int tailley, char *mot, int posx, int posy);
 void MotsCroises();
+void MotsMeles();
 
 
 // Cette fonction retourne 1 si un mot donné a pu être inséré automatiquement dans la grille.
