@@ -142,7 +142,7 @@ void MotsCroises(){
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, FLAG_VERTICAL, lexique[1]);
     
     // Tenter de remplir la grille avec d'autres mots
-    for(int i = 2; i < 8; i++){
+    for(int i = 2; i < calculerTailleLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt"); i++){
         insererMotGrille(tab, &taillex, &tailley, lexique[i]);
     }
     
@@ -175,7 +175,7 @@ void MotsMeles(){
     insererMotDansTab2D(&tab, &taillex, &tailley, 0, 5, FLAG_VERTICAL, lexique[1]);
     
     // Tenter de remplir la grille avec d'autres mots
-    for(int i = 2; i < 4; i++){
+    for(int i = 2; i < calculerTailleLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt"); i++){
         insererMotGrille(tab, &taillex, &tailley, lexique[i]);
     }
     for(int i = 0; i < taillex; i++){
@@ -186,10 +186,21 @@ void MotsMeles(){
     // On affiche
     afficherTab2D(tab, taillex, tailley);
     printf("\n");
-    for(int i = 0; i < 4; i++) printf("%s\n", lexique[i]);
+    for(int i = 0; i < calculerTailleLexique("/Users/Paul-Henri/ownCloud/Cours EFREI/Semestre 2/Algorithmique/Projet 4/Projet 4/dico.txt"); i++) printf("%s\n", lexique[i]);
 }
 
 int main(int argc, const char * argv[]) {
-    MotsMeles();
+    int choix;
+    printf("==========================\n");
+    printf("        Jeux de mots      \n");
+    printf("==========================\n");
+    printf("\n");
+    printf("1. Lancer les mots croisés\n");
+    printf("2. Lancer les mots mêlés\n");
+    printf("\n");
+    scanf("%d", &choix);
+    if (choix == 1) MotsCroises();
+    else if (choix == 2) MotsMeles();
+    else printf("Ce n'est pas un choix valide. Au revoir\n");
     return 0;
 }

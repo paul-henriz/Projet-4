@@ -25,6 +25,8 @@
 /* Begin PBXFileReference section */
 		5CF9240A1EBB6CF700A14C62 /* Projet 4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Projet 4"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CF9240D1EBB6CF700A14C62 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		5CF924281EBB78E900A14C62 /* Bibliotheque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bibliotheque.h; sourceTree = "<group>"; };
+		5CF9242A1EBB7AB000A14C62 /* dico.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dico.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				5CF9240D1EBB6CF700A14C62 /* main.c */,
+				5CF924281EBB78E900A14C62 /* Bibliotheque.h */,
+				5CF9242A1EBB7AB000A14C62 /* dico.txt */,
 			);
 			path = "Projet 4";
 			sourceTree = "<group>";
